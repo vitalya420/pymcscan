@@ -2,8 +2,6 @@ import argparse
 import asyncio
 import os
 
-import uvloop
-
 import geo
 import utils
 from manager import ScanManager
@@ -51,6 +49,6 @@ async def main(args):
 if __name__ == '__main__':
     if os.geteuid() == 0:
         args = parse_arguments()
-        uvloop.run(main(args))
+        asyncio.run(main(args))
     else:
         print('Root access required')
