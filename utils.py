@@ -1,3 +1,4 @@
+import time
 from ipaddress import ip_network
 
 from packet import Packet
@@ -21,3 +22,15 @@ def chunkify(lst, chunks):
         yield lst[i * chunk_size:(i + 1) * chunk_size]
     # Handle the last chunk separately to include any leftovers
     yield lst[(chunks - 1) * chunk_size:]
+
+
+def performance_test():
+    start = time.time()
+    for i in range(1_000_000):
+        packet = build_syn_packet('192.168.0.1', '192.168.0.2', 12345)
+    end = time.time()
+
+    print(end-start)
+
+if __name__ == '__main__':
+    performance_test()
