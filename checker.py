@@ -1,6 +1,6 @@
 import asyncio
 from mcstatus import JavaServer
-
+import sys
 
 async def ping_server(ip: str) -> None:
     try:
@@ -24,7 +24,7 @@ async def ping_ips(ips: list[str]) -> None:
 
 
 def main() -> None:
-    with open('de_25565test.txt', 'r') as ips_file:
+    with open(sys.argv[1], 'r') as ips_file:
         ips = ips_file.read().split('\n')[:-1]
         asyncio.run(ping_ips(ips))
 
