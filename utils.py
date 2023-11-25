@@ -1,8 +1,11 @@
 import time
-from ipaddress import ip_network
+from ipaddress import ip_network, ip_address
 
 from packet import Packet
 
+
+def ip_to_decimal(ip):
+    return int(ip_address(ip))
 
 def ip_generator(subnet):
     network = ip_network(subnet)

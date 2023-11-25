@@ -5,7 +5,11 @@ from threading import Thread
 from struct import pack
 import socket
 
+import utils
+
 scannerlib = ctypes.CDLL('./libscanner.so')
+
+
 
 class Scanner(Process):
     def __init__(self, chunk, port, src_ip, source_port):
@@ -13,6 +17,7 @@ class Scanner(Process):
         self.source_port = source_port
         self.chunk = chunk
         self.src_ip = src_ip
+        self.src_ip_dec = utils.ip_to_decimal(self.src_ip)
         self.port = port
         self.sockfd = scannerlib.create_raw_socket()
         if self.sockfd < 0:
@@ -27,6 +32,14 @@ class Scanner(Process):
             ctypes.create_string_buffer(src_ip.encode()), 
             src_port, 
             ctypes.create_string_buffer(dst_ip.encode()), 
+            dst_port
+            )
+
+    def send_syn_dec(self, src_ip, src_port, dst_ip, dst_port):
+        return scannerlib.send_syn_dec(self.sockfd, 
+            src_ip, 
+            src_port, 
+            dst_ip, 
             dst_port
             )
 
@@ -51,10 +64,7 @@ class Scanner(Process):
             for ip_dec in range(int(starts), int(ends)):
                 targets_scanned += 1
 
-                packed_ip = pack('!I', ip_dec)
-                ipv4_address = socket.inet_ntoa(packed_ip)
-
-                self.send_syn(self.src_ip, self.source_port, ipv4_address, self.port)
+                self.send_syn_dec(self.src_ip_dec, self.source_port, ip_dec, self.port)
 
         scan_completed = True
         speed_task.join()
