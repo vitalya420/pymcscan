@@ -19,19 +19,11 @@ class ScanManager:
         self._loop: asyncio.AbstractEventLoop
         self._handler_task: asyncio.Task
 
-    def start_processes(self, subnets, port):
-        self.proc = []
-        for subnet in subnets:
-            worker = Scanner(self.sock, subnet, port, self.source_port)
-            worker.daemon = True
-            self.proc.append(worker)
 
-        for p in self.proc:
-            p.start()
 
     def scan_row_chunks(self, chunks: list[list], src_ip, port):
         for chunk in chunks:
-            worker = Scanner(self.sock, chunk, port, src_ip, self.source_port)
+            worker = Scanner(chunk, port, src_ip, self.source_port)
             worker.daemon = True
             self.proc.append(worker)
 
