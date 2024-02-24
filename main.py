@@ -27,6 +27,10 @@ def parse_arguments():
                         help='Result file name')
     parser.add_argument('--print-opened', type=bool, required=False,
                         help='Print opened ports')
+    parser.add_argument('--iface', type=str, required=True, help='Network interface name')
+    parser.add_argument('--src-mac', type=str, required=True, help='Source MAC address')
+    parser.add_argument('--dst-mac', type=str, required=True, help='Destination MAC address')
+
     args = parser.parse_args()
     return args
 
@@ -39,7 +43,8 @@ async def main(args):
                            timeout=args.timeout,
                            filename=args.file,
                            print_opened=args.print_opened) as scan_manager:
-        scan_manager.scan_row_chunks(chunks, args.src_ip, args.dst_port)
+        scan_manager.scan_row_chunks(chunks, args.src_ip, args.dst_port,
+                                     args.iface, args.src_mac, args.dst_mac)
     #     # scan_manager.start_processes([
     #     #     '46.0.0.0/8',
     #     # ], 80)

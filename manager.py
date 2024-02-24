@@ -21,9 +21,9 @@ class ScanManager:
 
 
 
-    def scan_row_chunks(self, chunks: list[list], src_ip, port):
+    def scan_row_chunks(self, chunks: list[list], src_ip, port, iface, src_mac, dst_mac):
         for chunk in chunks:
-            worker = Scanner(chunk, port, src_ip, self.source_port)
+            worker = Scanner(chunk, port, src_ip, self.source_port, iface, src_mac, dst_mac)
             worker.daemon = True
             self.proc.append(worker)
 
