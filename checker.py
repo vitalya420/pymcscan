@@ -4,11 +4,11 @@ import sys
 
 async def ping_server(ip: str) -> None:
     try:
-        status = await (await JavaServer.async_lookup(ip)).async_status()
+        status = await (await JavaServer.async_lookup(ip, timeout=10)).async_status()
     except Exception:
         return
 
-    print(f"{ip} - {status.latency:02f}ms {status.players.online} {status.version.name}")  # handle somehow responses here
+    print(f"{ip}")  # handle somehow responses here
 
 
 async def ping_ips(ips: list[str]) -> None:
